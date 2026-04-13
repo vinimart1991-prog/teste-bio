@@ -1,29 +1,24 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quiz de Bioquímica - DNA e RNA</title>
   <style>
     :root {
-      --bg: #f5f0e8;
-      --paper: #fffdf8;
-      --ink: #1e1b18;
-      --muted: #6e6258;
-      --accent: #0d5c63;
-      --accent-soft: #d7ecee;
-      --border: #d8cfc4;
+      --paper: #fffaf3;
+      --ink: #1f1c17;
+      --muted: #6f6257;
+      --accent: #0f5c66;
+      --accent-soft: #d9ecee;
+      --border: #d8cec1;
       --wrong: #c93c37;
       --wrong-soft: #fde4e2;
       --right: #2e8b57;
       --right-soft: #e2f5e9;
       --shadow: 0 18px 45px rgba(42, 34, 28, 0.12);
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -34,206 +29,46 @@
         linear-gradient(180deg, #f7f2ea 0%, #efe6da 100%);
       min-height: 100vh;
     }
-
-    .page {
-      width: min(1100px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 32px 0 96px;
-    }
-
+    .page { width: min(1100px, calc(100% - 32px)); margin: 0 auto; padding: 32px 0 96px; }
     .hero {
-      background: linear-gradient(135deg, rgba(13, 92, 99, 0.96), rgba(8, 41, 50, 0.96));
-      color: #fff;
-      border-radius: 28px;
-      padding: 32px;
-      box-shadow: var(--shadow);
-      margin-bottom: 24px;
+      background: linear-gradient(135deg, rgba(15, 92, 102, 0.96), rgba(8, 41, 50, 0.96));
+      color: #fff; border-radius: 28px; padding: 32px; box-shadow: var(--shadow); margin-bottom: 24px;
     }
-
-    .hero h1 {
-      margin: 0 0 8px;
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      line-height: 1;
-    }
-
-    .hero p {
-      margin: 0;
-      max-width: 760px;
-      color: rgba(255, 255, 255, 0.88);
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-
+    .hero h1 { margin: 0 0 8px; font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1; }
+    .hero p { margin: 0; max-width: 780px; color: rgba(255,255,255,.88); font-size: 1rem; line-height: 1.6; }
     .toolbar {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 16px;
-      align-items: center;
-      background: rgba(255, 253, 248, 0.92);
-      border: 1px solid rgba(216, 207, 196, 0.9);
-      border-radius: 22px;
-      padding: 18px 20px;
-      margin-bottom: 24px;
-      box-shadow: 0 10px 24px rgba(42, 34, 28, 0.08);
-      position: sticky;
-      top: 12px;
-      backdrop-filter: blur(8px);
-      z-index: 20;
+      display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center;
+      background: rgba(255, 250, 243, 0.92); border: 1px solid rgba(216, 207, 196, 0.9);
+      border-radius: 22px; padding: 18px 20px; margin-bottom: 24px; box-shadow: 0 10px 24px rgba(42,34,28,.08);
+      position: sticky; top: 12px; backdrop-filter: blur(8px); z-index: 20;
     }
-
-    .stats {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .pill {
-      background: var(--accent-soft);
-      color: var(--accent);
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-weight: 700;
-      font-size: 0.95rem;
-    }
-
-    .reset-btn {
-      border: 0;
-      border-radius: 14px;
-      padding: 12px 18px;
-      background: var(--ink);
-      color: #fff;
-      cursor: pointer;
-      font-weight: 700;
-      transition: transform 0.15s ease, opacity 0.15s ease;
-    }
-
-    .reset-btn:hover {
-      transform: translateY(-1px);
-      opacity: 0.92;
-    }
-
-    .section-title {
-      margin: 28px 0 14px;
-      font-size: 1.25rem;
-      color: var(--accent);
-    }
-
-    .quiz-grid {
-      display: grid;
-      gap: 18px;
-    }
-
-    .question-card {
-      background: var(--paper);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 22px;
-      box-shadow: 0 10px 24px rgba(42, 34, 28, 0.07);
-    }
-
-    .meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .badge {
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      background: #efe6da;
-      color: #5b4f43;
-    }
-
-    .badge.dissertativa {
-      background: #efe5fb;
-      color: #5e3a8c;
-    }
-
-    .question-card h3 {
-      margin: 0 0 16px;
-      font-size: 1.05rem;
-      line-height: 1.55;
-    }
-
-    .options {
-      display: grid;
-      gap: 10px;
-    }
-
-    .option-btn {
-      width: 100%;
-      border: 1px solid var(--border);
-      background: #fff;
-      color: var(--ink);
-      border-radius: 16px;
-      padding: 14px 16px;
-      text-align: left;
-      cursor: pointer;
-      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
-      font-size: 0.98rem;
-      line-height: 1.45;
-    }
-
-    .option-btn:hover:not(:disabled) {
-      transform: translateY(-1px);
-      border-color: var(--accent);
-    }
-
-    .option-btn:disabled {
-      cursor: default;
-    }
-
-    .option-btn.correct {
-      background: var(--right-soft);
-      border-color: var(--right);
-      color: #175133;
-      font-weight: 700;
-    }
-
-    .option-btn.wrong {
-      background: var(--wrong-soft);
-      border-color: var(--wrong);
-      color: #7f1e1b;
-      font-weight: 700;
-    }
-
-    .feedback {
-      min-height: 24px;
-      margin-top: 12px;
-      font-weight: 700;
-      color: var(--muted);
-    }
-
-    .feedback.correct {
-      color: var(--right);
-    }
-
-    .feedback.wrong {
-      color: var(--wrong);
-    }
-
+    .stats { display: flex; flex-wrap: wrap; gap: 12px; }
+    .pill { background: var(--accent-soft); color: var(--accent); border-radius: 999px; padding: 10px 14px; font-weight: 700; font-size: .95rem; }
+    .reset-btn { border: 0; border-radius: 14px; padding: 12px 18px; background: var(--ink); color: #fff; cursor: pointer; font-weight: 700; }
+    .section-title { margin: 28px 0 14px; font-size: 1.25rem; color: var(--accent); }
+    .quiz-grid { display: grid; gap: 18px; }
+    .question-card { background: var(--paper); border: 1px solid var(--border); border-radius: 22px; padding: 22px; box-shadow: 0 10px 24px rgba(42,34,28,.07); }
+    .meta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+    .badge { border-radius: 999px; padding: 6px 10px; font-size: .78rem; font-weight: 700; letter-spacing: .02em; background: #efe6da; color: #5b4f43; }
+    .badge.dissertativa { background: #efe5fb; color: #5e3a8c; }
+    .question-card h3 { margin: 0 0 16px; font-size: 1.05rem; line-height: 1.55; }
+    .question-card img { width: 100%; max-width: 520px; display: block; margin: 10px 0 16px; border-radius: 16px; border: 1px solid var(--border); background: #fff; }
+    .caption { margin: 0 0 16px; font-size: .9rem; color: var(--muted); }
+    .options { display: grid; gap: 10px; }
+    .option-btn { width: 100%; border: 1px solid var(--border); background: #fff; color: var(--ink); border-radius: 16px; padding: 14px 16px; text-align: left; cursor: pointer; font-size: .98rem; line-height: 1.45; }
+    .option-btn.correct { background: var(--right-soft); border-color: var(--right); color: #175133; font-weight: 700; }
+    .option-btn.wrong { background: var(--wrong-soft); border-color: var(--wrong); color: #7f1e1b; font-weight: 700; }
+    .feedback { min-height: 24px; margin-top: 12px; font-weight: 700; color: var(--muted); }
+    .feedback.correct { color: var(--right); }
+    .feedback.wrong { color: var(--wrong); }
+    details { margin-top: 12px; border: 1px dashed rgba(111,98,87,.35); border-radius: 14px; padding: 10px 14px; background: #fff; }
+    summary { cursor: pointer; font-weight: 700; color: var(--accent); }
+    .tip { margin: 8px 0 0; color: var(--muted); line-height: 1.5; }
     @media (max-width: 720px) {
-      .page {
-        width: min(100% - 20px, 1100px);
-        padding-top: 18px;
-      }
-
-      .hero,
-      .question-card {
-        padding: 18px;
-      }
-
-      .toolbar {
-        grid-template-columns: 1fr;
-      }
-
-      .reset-btn {
-        width: 100%;
-      }
+      .page { width: min(100% - 20px, 1100px); padding-top: 18px; }
+      .hero, .question-card { padding: 18px; }
+      .toolbar { grid-template-columns: 1fr; }
+      .reset-btn { width: 100%; }
     }
   </style>
 </head>
@@ -242,9 +77,9 @@
     <section class="hero">
       <h1>Quiz de Bioquímica</h1>
       <p>
-        Página em HTML baseada nas questões dos anexos sobre DNA, RNA, ciclo celular e expressão gênica.
-        As questões dissertativas foram convertidas em múltipla escolha. Clique nas alternativas:
-        erro fica em vermelho, acerto fica em verde.
+        Questões dos anexos com texto completo, imagens quando presentes e dissertativas
+        convertidas em múltipla escolha. Clique nas alternativas: erro fica em vermelho,
+        acerto fica em verde. Abra as dicas e explicações para memorizar melhor.
       </p>
     </section>
 
@@ -267,7 +102,7 @@
         questions: [
           {
             type: "objetiva",
-            prompt: "1) Sobre a estrutura do DNA, assinale a alternativa correta.",
+            prompt: "1) Sobre a estrutura do DNA, analise as afirmações e assinale a alternativa correta.",
             options: [
               "As duas fitas de DNA formam uma dupla-hélice, por meio de ligações de hidrogênio entre as bases nitrogenadas.",
               "Os nucleotídeos do DNA possuem adenina, timina, guanina e uracila.",
@@ -275,11 +110,13 @@
               "As duas fitas do DNA possuem a mesma orientação e se unem por pontes dissulfeto.",
               "Os nucleotídeos do DNA se unem por ligações peptídicas."
             ],
-            correctIndex: 0
+            correctIndex: 0,
+            hint: "Pense na dupla-hélice e no pareamento por pontes de hidrogênio entre bases.",
+            explanation: "O DNA é formado por duas fitas antiparalelas unidas por ligações de hidrogênio entre as bases. Não há uracila no DNA, e as ligações entre nucleotídeos são fosfodiéster. Memorização: DNA = dupla-hélice + A-T e C-G."
           },
           {
             type: "objetiva",
-            prompt: "2) Associe as enzimas da replicação do DNA às respectivas funções. Qual é a ordem correta?",
+            prompt: "2) Associe as enzimas com suas funções na replicação do DNA e assinale a ordem correta. (1) Helicase; (2) Primase; (3) DNA polimerase III; (4) DNA ligase. Funções: (A) Abre a dupla hélice e promove o avanço da forquilha. (B) Une trechos após remoção dos primers e fragmentos de Okazaki. (C) Alonga o novo filamento a partir do primer. (D) Adiciona um primer de RNA para iniciar a replicação.",
             options: [
               "2, 4, 3, 1",
               "1, 3, 4, 2",
@@ -287,11 +124,18 @@
               "1, 4, 3, 2",
               "4, 1, 3, 2"
             ],
-            correctIndex: 3
+            correctIndex: 3,
+            hint: "Sequência típica: abrir a dupla hélice, fazer primer, alongar, ligar fragmentos.",
+            explanation: "Helicase abre a dupla hélice (A). Primase adiciona primer (D). DNA polimerase III alonga (C). DNA ligase sela os fragmentos (B). Ordem: 1, 4, 3, 2. Memorização: Abrir → iniciar → alongar → ligar."
           },
           {
             type: "objetiva",
-            prompt: "3) Na estrutura do DNA, os números 1, 2 e 3 representam, respectivamente:",
+            prompt: "3) Sobre a estrutura do DNA, no esquema abaixo os números 1, 2 e 3 representam, respectivamente:",
+            image: {
+              src: "assets/img/Avaliação N1 - PMG 20251_p2_img1.png",
+              alt: "Esquema da estrutura do DNA com números 1, 2 e 3.",
+              caption: "Figura: esquema da estrutura do DNA."
+            },
             options: [
               "Fosfato, ribose e aminoácido.",
               "Desoxirribose, fosfato e base nitrogenada.",
@@ -299,11 +143,13 @@
               "Fosfato, base nitrogenada e desoxirribose.",
               "Fosfato, desoxirribose e base nitrogenada."
             ],
-            correctIndex: 4
+            correctIndex: 4,
+            hint: "O nucleotídeo é formado por fosfato + açúcar + base.",
+            explanation: "A estrutura clássica de um nucleotídeo é fosfato, desoxirribose e base nitrogenada. Memorização: P-A-B (Fosfato-Açúcar-Base)."
           },
           {
             type: "objetiva",
-            prompt: "4) Sobre ácidos nucleicos e nucleotídeos, qual alternativa está correta?",
+            prompt: "4) Considere as afirmações sobre ácidos nucleicos e nucleotídeos. Assinale a alternativa correta.",
             options: [
               "Apenas II e III estão corretas.",
               "Apenas I, II e III estão corretas.",
@@ -311,7 +157,9 @@
               "Apenas I e II estão corretas.",
               "Apenas II, III e IV estão corretas."
             ],
-            correctIndex: 1
+            correctIndex: 1,
+            hint: "Lembre das ligações fosfodiéster e do DNA como molde para RNA.",
+            explanation: "I, II e III estão corretas. A IV está errada porque a síntese de proteínas não ocorre no retículo liso, e o DNA não é diretamente molde de proteínas. Memorização: DNA → RNA → proteína."
           },
           {
             type: "objetiva",
@@ -323,7 +171,9 @@
               "O códon de terminação é reconhecido por um tRNA específico carregado com fator de liberação.",
               "A tradução ocorre simultaneamente com a transcrição em células eucarióticas."
             ],
-            correctIndex: 2
+            correctIndex: 2,
+            hint: "A ligação peptídica acontece na subunidade maior.",
+            explanation: "O centro catalítico (peptidil-transferase) fica na subunidade maior do ribossomo. Memorização: maior = mais funções catalíticas."
           },
           {
             type: "objetiva",
@@ -335,11 +185,13 @@
               "A transcrição ocorre no retículo endoplasmático rugoso.",
               "A síntese de RNA ocorre sempre no sentido 3' para 5'."
             ],
-            correctIndex: 0
+            correctIndex: 0,
+            hint: "TBP reconhece a TATA box no promotor.",
+            explanation: "TBP se liga à TATA box para iniciar a montagem do complexo de transcrição. Memorização: TATA ↔ TBP."
           },
           {
             type: "objetiva",
-            prompt: "7) Associe as modificações pós-transcricionais com as definições. Qual é a sequência correta?",
+            prompt: "7) Associe as modificações pós-transcricionais (1) Cap 5', (2) Cauda poli-A 3', (3) Splicing com as definições e assinale a sequência correta.",
             options: [
               "1, 3, 2",
               "1, 2, 3",
@@ -347,23 +199,32 @@
               "3, 1, 2",
               "2, 3, 1"
             ],
-            correctIndex: 4
+            correctIndex: 4,
+            hint: "Poli-A protege o RNA; splicing remove íntrons.",
+            explanation: "Poli-A: proteção/estabilidade; splicing: remove íntrons; cap 5': guanina modificada. Sequência: 2, 3, 1. Memorização: A-Í-C (A de Adenina, Í de íntron, C de cap)."
           },
           {
             type: "objetiva",
-            prompt: "8) De acordo com a síntese proteica, podemos afirmar que:",
+            prompt: "8) A figura a seguir representa etapas da síntese de uma proteína. Com base nisso, podemos afirmar que:",
+            image: {
+              src: "assets/img/Avaliação N1 - PMG 20251_p4_img1.png",
+              alt: "Figura representando síntese proteica.",
+              caption: "Figura: etapas da síntese proteica."
+            },
             options: [
-              "Para a síntese de proteínas são necessários RNAm, RNAt e RNAr.",
+              "Para a síntese de proteínas são necessários RNAm, RNAt e RNAr (no ribossomo).",
               "O processo representado é a transcrição e ocorre no citoplasma.",
               "O RNAt possui o códon que será decodificado pelo RNAm com o anticódon.",
               "O RNAm carrega o aminoácido correspondente durante a síntese proteica.",
               "Todo RNAt possui o mesmo códon de iniciação, sempre UAA."
             ],
-            correctIndex: 0
+            correctIndex: 0,
+            hint: "Tradução precisa de mRNA, tRNA e ribossomo (rRNA).",
+            explanation: "A tradução exige RNAm, RNAt e RNAr. As demais alternativas descrevem incorretamente as funções de RNAm e RNAt. Memorização: mRNA = mensagem; tRNA = transporta; rRNA = ribossomo."
           },
           {
             type: "objetiva",
-            prompt: "9) A ricina pode ocasionar a morte ao inibir diretamente a síntese de:",
+            prompt: "9) A ricina destrói ribossomos. Assim, ela inibe diretamente a síntese de:",
             options: [
               "Lipídeos.",
               "DNA.",
@@ -371,11 +232,13 @@
               "RNA.",
               "Carboidratos."
             ],
-            correctIndex: 2
+            correctIndex: 2,
+            hint: "Ribossomo = local de tradução.",
+            explanation: "Ribossomos sintetizam proteínas, logo sua destruição impede tradução. Memorização: ribossomo → proteína."
           },
           {
             type: "objetiva",
-            prompt: "10) Sobre alterações cromossômicas, qual alternativa está correta?",
+            prompt: "10) Analise as afirmações sobre alterações cromossômicas e assinale a alternativa correta.",
             options: [
               "Apenas I e II estão corretas.",
               "Apenas I, III e IV estão corretas.",
@@ -383,19 +246,28 @@
               "Apenas II, III e IV estão corretas.",
               "Apenas II e IV estão corretas."
             ],
-            correctIndex: 2
+            correctIndex: 2,
+            hint: "Translocação e inversão são estruturais, não numéricas.",
+            explanation: "I e III são verdadeiras. II está errada (translocação é estrutural) e IV está errada (inversão não cria segmento extra). Memorização: Numéricas = número; estruturais = pedaços."
           },
           {
             type: "dissertativa",
-            prompt: "11) Convertida da dissertativa: em uma única origem de replicação eucariótica, em que direção a replicação prossegue em relação ao ponto de origem?",
+            prompt: "11) Convertida da dissertativa: em uma única origem de replicação eucariótica, em relação à linha pontilhada, em qual(is) direção(ões) a replicação prossegue?",
+            image: {
+              src: "assets/img/Avaliação N1 - PMG 20251_p5_img1.png",
+              alt: "Figura com origem de replicação e linha pontilhada.",
+              caption: "Figura: origem de replicação em célula eucariótica."
+            },
             options: [
-              "Apenas para a direita, porque existe uma única forquilha de replicação.",
-              "Apenas para a esquerda, pois a DNA polimerase só avança nesse sentido no cromossomo.",
+              "Apenas para a direita, porque existe uma única forquilha.",
+              "Apenas para a esquerda, pois a DNA polimerase só avança nesse sentido.",
               "Para ambos os lados, de forma bidirecional a partir da origem.",
-              "Nenhuma direção definida, porque a replicação é aleatória.",
-              "Primeiro para a direita e só depois para a esquerda."
+              "Não há direção definida, porque a replicação é aleatória.",
+              "Primeiro para a direita e depois para a esquerda."
             ],
-            correctIndex: 2
+            correctIndex: 2,
+            hint: "Origens eucarióticas geram duas forquilhas.",
+            explanation: "A replicação é bidirecional a partir da origem, formando duas forquilhas. Memorização: origem = duas setas."
           },
           {
             type: "dissertativa",
@@ -407,7 +279,9 @@
               "O anticódon passou de AUG para UGG, produzindo metionina no lugar de triptofano.",
               "O anticódon permaneceu igual, e a mudança ocorreu na ribose."
             ],
-            correctIndex: 0
+            correctIndex: 0,
+            hint: "Anticódon complementa o códon; Trp é UGG.",
+            explanation: "Para reconhecer UGA, o anticódon precisa parear com ele; uma mudança no anticódon de um tRNA de triptofano permite leitura supressora. Memorização: códon e anticódon são complementares."
           }
         ]
       },
@@ -416,7 +290,7 @@
         questions: [
           {
             type: "objetiva",
-            prompt: "13) Durante o ciclo celular, qual fase é caracterizada principalmente pelo crescimento celular e síntese de proteínas e organelas, preparando-se para a replicação do DNA?",
+            prompt: "13) Durante o ciclo celular, qual fase é caracterizada principalmente pelo crescimento celular e pela síntese de proteínas e organelas, preparando-se para a replicação do DNA?",
             options: [
               "Fase S",
               "Fase G2",
@@ -424,11 +298,13 @@
               "Fase M",
               "Citocinese"
             ],
-            correctIndex: 2
+            correctIndex: 2,
+            hint: "G1 é a fase de crescimento.",
+            explanation: "G1 é crescimento e preparação; S é duplicação do DNA; G2 prepara a mitose. Memorização: G1 = Growth."
           },
           {
             type: "objetiva",
-            prompt: "14) Qual é a sequência correta do Dogma Central da Biologia Molecular?",
+            prompt: "14) O Dogma Central da Biologia Molecular descreve o fluxo de informação genética. Qual é a sequência correta?",
             options: [
               "RNA → DNA → Proteína",
               "DNA → RNA → Proteína",
@@ -436,7 +312,9 @@
               "DNA → Proteína → RNA",
               "RNA → Proteína → DNA"
             ],
-            correctIndex: 1
+            correctIndex: 1,
+            hint: "DNA vira RNA, que vira proteína.",
+            explanation: "O fluxo clássico é DNA → RNA → proteína. Memorização: D-R-P."
           },
           {
             type: "objetiva",
@@ -448,7 +326,9 @@
               "Topoisomerase",
               "DNA helicase"
             ],
-            correctIndex: 4
+            correctIndex: 4,
+            hint: "Helicase abre a hélice.",
+            explanation: "A helicase separa as fitas de DNA. A topoisomerase alivia superenrolamento. Memorização: helicase = hélice."
           },
           {
             type: "objetiva",
@@ -460,35 +340,41 @@
               "Edição de RNA",
               "Metilação de bases internas"
             ],
-            correctIndex: 1
+            correctIndex: 1,
+            hint: "Cap 5' é proteção + início da tradução.",
+            explanation: "O cap 5' protege o RNA e ajuda no recrutamento do ribossomo. Memorização: cap = capacete."
           },
           {
             type: "dissertativa",
-            prompt: "17) Convertida da dissertativa: qual opção explica melhor a importância da replicação semiconservativa do DNA?",
+            prompt: "17) Convertida da dissertativa: qual opção explica melhor a importância da replicação semiconservativa do DNA e como garante fidelidade?",
             options: [
-              "Cada molécula-filha mantém uma fita parental e uma fita nova, o que preserva a informação genética e permite correção de erros durante a cópia.",
-              "As duas fitas da molécula original permanecem juntas, e apenas moléculas extras são produzidas para reserva.",
-              "A replicação semiconservativa impede totalmente qualquer mutação, tornando o DNA imutável.",
-              "Somente genes ativos são replicados, reduzindo o gasto energético da célula.",
-              "A principal função é trocar timina por uracila para facilitar a divisão celular."
+              "Cada molécula-filha mantém uma fita parental e uma fita nova, preservando a informação e permitindo correção durante a cópia.",
+              "As duas fitas da molécula original permanecem juntas e moléculas extras são produzidas para reserva.",
+              "A replicação semiconservativa impede totalmente qualquer mutação.",
+              "Somente genes ativos são replicados, reduzindo gasto energético.",
+              "A principal função é trocar timina por uracila."
             ],
-            correctIndex: 0
+            correctIndex: 0,
+            hint: "Semiconservativa = 1 fita velha + 1 nova.",
+            explanation: "Cada dupla hélice-filha herda uma fita antiga, garantindo fidelidade e servindo de molde. Memorização: semi = metade antiga."
           },
           {
             type: "dissertativa",
             prompt: "18) Convertida da dissertativa: qual é a importância do ponto de checagem G2/M e o que pode ocorrer se ele falhar cronicamente?",
             options: [
-              "Ele impede a entrada em mitose quando o DNA não terminou de ser replicado ou está danificado; se falhar, pode haver instabilidade genômica e proliferação descontrolada.",
-              "Ele ativa a citocinese antes da replicação; se falhar, a célula perde ribossomos.",
-              "Ele inicia a tradução dos genes mitóticos; se falhar, a célula deixa de produzir ATP.",
-              "Ele remove telômeros encurtados; se falhar, o DNA se converte em RNA.",
-              "Ele controla a síntese de parede celular; se falhar, a mitose acontece sem cromossomos."
+              "Impede mitose com DNA incompleto ou danificado; falha crônica causa instabilidade genômica e proliferação descontrolada.",
+              "Ativa a citocinese antes da replicação; se falhar, a célula perde ribossomos.",
+              "Inicia tradução dos genes mitóticos; se falhar, a célula deixa de produzir ATP.",
+              "Remove telômeros encurtados; se falhar, o DNA se converte em RNA.",
+              "Controla a síntese de parede celular; se falhar, a mitose ocorre sem cromossomos."
             ],
-            correctIndex: 0
+            correctIndex: 0,
+            hint: "G2/M confere se o DNA está pronto para mitose.",
+            explanation: "O checkpoint G2/M bloqueia mitose se houver dano ou replicação incompleta. Falhas levam a aneuploidias e câncer. Memorização: G2/M = Go/Stop."
           },
           {
             type: "objetiva",
-            prompt: "19) Qual das fases do ciclo celular é caracterizada pela intensa síntese de proteínas e organelas, preparando a célula para a replicação do DNA?",
+            prompt: "19) Qual fase do ciclo celular é caracterizada pela intensa síntese de proteínas e organelas, preparando a célula para a replicação do DNA?",
             options: [
               "Fase S",
               "Fase G2",
@@ -496,7 +382,9 @@
               "Telófase",
               "Fase G1"
             ],
-            correctIndex: 4
+            correctIndex: 4,
+            hint: "Antes da replicação vem G1.",
+            explanation: "G1 é a fase de crescimento e preparação. Memorização: G1 = Growth 1."
           },
           {
             type: "objetiva",
@@ -508,7 +396,9 @@
               "Citocinese",
               "Fase S"
             ],
-            correctIndex: 4
+            correctIndex: 4,
+            hint: "S de síntese.",
+            explanation: "A fase S é quando ocorre a síntese/duplicação do DNA. Memorização: S = Synthesis."
           },
           {
             type: "objetiva",
@@ -520,23 +410,27 @@
               "Ação das topoisomerases para superenrolar o DNA",
               "Revisão pela polimerase e sistemas específicos de reparo do DNA"
             ],
-            correctIndex: 4
+            correctIndex: 4,
+            hint: "A própria polimerase revisa.",
+            explanation: "A revisão (proofreading) e reparos específicos corrigem erros. Memorização: polimerase = copiar e revisar."
           },
           {
             type: "dissertativa",
-            prompt: "22) Convertida da dissertativa: qual alternativa descreve corretamente a intérfase e seus principais eventos?",
+            prompt: "22) Convertida da dissertativa: qual alternativa descreve corretamente a intérfase e seus principais eventos em G1, S e G2?",
             options: [
-              "G1: crescimento e síntese; S: duplicação do DNA; G2: preparação final para mitose com checagem e síntese adicional.",
+              "G1: crescimento e síntese; S: duplicação do DNA; G2: preparação final e checagens para mitose.",
               "G1: mitose; S: citocinese; G2: apoptose.",
               "G1: tradução; S: transcrição; G2: digestão lisossomal.",
               "G1: duplicação de centrômeros; S: quebra cromossômica; G2: recombinação obrigatória.",
               "G1, S e G2 são fases equivalentes sem funções distintas."
             ],
-            correctIndex: 0
+            correctIndex: 0,
+            hint: "G1 cresce, S replica, G2 prepara.",
+            explanation: "A intérfase é preparação: G1 cresce, S duplica DNA, G2 finaliza e checa. Memorização: G1-S-G2 = Crescer-Duplicar-Preparar."
           },
           {
             type: "dissertativa",
-            prompt: "23) Convertida da dissertativa: qual descrição resume corretamente a replicação semiconservativa do DNA e o papel da DNA polimerase?",
+            prompt: "23) Convertida da dissertativa: qual descrição resume corretamente a replicação semiconservativa e o papel da DNA polimerase?",
             options: [
               "Cada fita parental serve de molde para uma nova fita, e a DNA polimerase adiciona nucleotídeos no sentido 5'→3', ajudando a garantir fidelidade.",
               "A DNA polimerase quebra as duas fitas parentais e as substitui por RNA temporário.",
@@ -544,7 +438,9 @@
               "A DNA polimerase sintetiza proteínas que depois viram DNA nas células-filhas.",
               "O processo gera uma célula com DNA e outra com RNA."
             ],
-            correctIndex: 0
+            correctIndex: 0,
+            hint: "Polimerase sempre sintetiza 5'→3'.",
+            explanation: "A polimerase usa a fita molde e adiciona nucleotídeos no sentido 5'→3'. Memorização: 5'→3' é a regra de ouro."
           },
           {
             type: "objetiva",
@@ -556,7 +452,9 @@
               "Sintetizar as novas fitas de DNA de forma contínua e descontínua, adicionando nucleotídeos na direção 5'→3'.",
               "Reparar danos no DNA causados por agentes mutagênicos."
             ],
-            correctIndex: 3
+            correctIndex: 3,
+            hint: "Pol III é a principal enzima de síntese.",
+            explanation: "A Polimerase III é a enzima replicativa principal em E. coli. Memorização: Pol III = principal."
           },
           {
             type: "objetiva",
@@ -568,11 +466,13 @@
               "Sinalizar o término da transcrição e liberar a RNA polimerase.",
               "Atuar como sítio de ligação para iniciar a transcrição."
             ],
-            correctIndex: 2
+            correctIndex: 2,
+            hint: "Poli-A protege e ajuda no transporte.",
+            explanation: "A cauda poli-A aumenta estabilidade e ajuda na exportação e tradução. Memorização: A de Ajuda."
           },
           {
             type: "objetiva",
-            prompt: "26) Na tradução, qual é o papel essencial do sítio P do ribossomo?",
+            prompt: "26) Na tradução, qual é o papel essencial do sítio P (peptidil) do ribossomo?",
             options: [
               "Receber o tRNA com o próximo aminoácido.",
               "Permitir a saída do tRNA descarregado.",
@@ -580,7 +480,9 @@
               "Manter o tRNA com a cadeia polipeptídica em crescimento, facilitando a ligação peptídica.",
               "Reconhecer o códon de iniciação e recrutar a subunidade menor."
             ],
-            correctIndex: 3
+            correctIndex: 3,
+            hint: "Sítio P = peptidil.",
+            explanation: "O sítio P mantém o tRNA com a cadeia em crescimento. Memorização: P = Peptídeo."
           },
           {
             type: "objetiva",
@@ -588,71 +490,83 @@
             options: [
               "O DNA é sempre de fita simples e o RNA sempre de fita dupla.",
               "A uracila está no DNA e a timina no RNA.",
-              "O DNA contém desoxirribose e timina, sendo mais estável; o RNA possui ribose e uracila, sendo mais versátil em funções catalíticas e regulatórias.",
+              "O DNA contém desoxirribose e timina, sendo mais estável; o RNA possui ribose e uracila, sendo mais versátil.",
               "O DNA fica exclusivamente no núcleo, enquanto o RNA fica apenas no citoplasma.",
               "O DNA é traduzido diretamente em proteínas."
             ],
-            correctIndex: 2
+            correctIndex: 2,
+            hint: "Diferença está no açúcar e na base T/U.",
+            explanation: "DNA: desoxirribose e timina; RNA: ribose e uracila. Memorização: DNA tem 'de' (desoxi)."
           },
           {
             type: "dissertativa",
             prompt: "28) Convertida da dissertativa: como a presença ou ausência de lactose e glicose afeta a expressão do operon lac?",
             options: [
-              "Sem lactose, o repressor lac bloqueia o operon; com lactose, ele é inativado. A baixa glicose aumenta AMPc, favorecendo a ligação de CAP e ativação máxima da transcrição.",
+              "Sem lactose, o repressor lac bloqueia o operon; com lactose, ele é inativado. Baixa glicose aumenta AMPc e ativa CAP.",
               "Com lactose, o repressor lac se liga mais fortemente ao operador e a glicose ativa CAP.",
               "A lactose ativa diretamente a RNA polimerase sem participação do repressor, e a glicose não interfere.",
               "Sem glicose, o operon lac é sempre desligado e não depende de lactose.",
               "CAP atua como enzima de replicação e não participa da regulação gênica."
             ],
-            correctIndex: 0
+            correctIndex: 0,
+            hint: "Lactose remove o repressor; pouca glicose ativa CAP.",
+            explanation: "Lactose inativa o repressor lac, e baixo nível de glicose aumenta AMPc, permitindo CAP ativar a transcrição. Memorização: Lac libera; CAP ativa."
           },
           {
             type: "dissertativa",
-            prompt: "29) Convertida da dissertativa: o que é splicing alternativo e qual sua importância biológica?",
+            prompt: "29) Convertida da dissertativa: o que é splicing alternativo e qual sua importância?",
             options: [
-              "É a seleção variável de éxons de um mesmo pré-mRNA, permitindo gerar diferentes proteínas a partir de um único gene e aumentando a diversidade proteica.",
-              "É a duplicação completa dos cromossomos antes da tradução, produzindo proteínas idênticas.",
-              "É a troca de timina por uracila diretamente no DNA para regular genes.",
+              "É a seleção variável de éxons de um mesmo pré-mRNA, gerando diferentes proteínas e aumentando a diversidade proteica.",
+              "É a duplicação completa dos cromossomos antes da tradução.",
+              "É a troca de timina por uracila diretamente no DNA.",
               "É um tipo de mutação que sempre causa perda total de função.",
               "É o processo de união de ribossomos para formar o nucléolo."
             ],
-            correctIndex: 0
+            correctIndex: 0,
+            hint: "Um gene pode gerar várias proteínas.",
+            explanation: "Splicing alternativo combina éxons de formas diferentes, aumentando a diversidade proteica. Memorização: alternativo = alternativas de éxons."
           },
           {
             type: "dissertativa",
             prompt: "30) Convertida da dissertativa: qual alternativa resume corretamente a função dos telômeros e da telomerase?",
             options: [
-              "Telômeros protegem as extremidades cromossômicas; a telomerase repõe sequências teloméricas, influenciando envelhecimento celular e também a imortalização de células tumorais.",
-              "Telômeros iniciam a tradução e a telomerase produz ribossomos no núcleo.",
-              "Telômeros são genes que controlam a glicose, e a telomerase remove mutações pontuais.",
-              "Telômeros existem apenas em procariotos e a telomerase inibe toda divisão celular.",
-              "Telômeros são regiões centrais dos cromossomos responsáveis pela segregação meiótica."
+              "Telômeros protegem extremidades cromossômicas; telomerase repõe sequências, influenciando envelhecimento e câncer.",
+              "Telômeros iniciam a tradução e telomerase produz ribossomos.",
+              "Telômeros controlam glicose e telomerase remove mutações pontuais.",
+              "Telômeros existem apenas em procariotos e telomerase inibe toda divisão celular.",
+              "Telômeros são regiões centrais para segregação meiótica."
             ],
-            correctIndex: 0
+            correctIndex: 0,
+            hint: "Telômero = tampão; telomerase repõe.",
+            explanation: "Telômeros protegem as pontas e encurtam com divisões; telomerase alonga, relevante em envelhecimento e câncer. Memorização: telômero = tampinha."
           },
           {
             type: "dissertativa",
-            prompt: "31) Convertida da dissertativa: qual alternativa compara corretamente replicação do DNA em procariotos e eucariotos?",
+            prompt: "31) Convertida da dissertativa: compare replicação do DNA em procariotos e eucariotos.",
             options: [
-              "Procariotos costumam ter uma origem de replicação em DNA circular e menos complexidade enzimática; eucariotos têm múltiplas origens em cromossomos lineares e maior complexidade de regulação.",
-              "Eucariotos replicam DNA apenas no citoplasma, enquanto procariotos replicam apenas no núcleo.",
+              "Procariotos têm DNA circular com uma origem e menor complexidade; eucariotos têm múltiplas origens em cromossomos lineares e maior regulação.",
+              "Eucariotos replicam DNA apenas no citoplasma, e procariotos apenas no núcleo.",
               "Procariotos usam ribossomos para replicação, e eucariotos usam lisossomos.",
-              "Nos eucariotos não há síntese descontínua, apenas contínua.",
-              "Procariotos e eucariotos têm processos idênticos, sem diferenças relevantes."
+              "Nos eucariotos não há síntese descontínua.",
+              "São processos idênticos."
             ],
-            correctIndex: 0
+            correctIndex: 0,
+            hint: "Procariotos: simples e circular. Eucariotos: múltiplas origens.",
+            explanation: "Diferenças principais: número de origens, organização cromossômica e complexidade enzimática. Memorização: eucarionte = complexo."
           },
           {
             type: "dissertativa",
-            prompt: "32) Convertida da dissertativa: como mutações pontuais silenciosas, de sentido trocado e sem sentido podem afetar uma proteína?",
+            prompt: "32) Convertida da dissertativa: como mutações pontuais silenciosas, de sentido trocado e sem sentido afetam proteínas?",
             options: [
-              "Silenciosa: não altera o aminoácido; sentido trocado: troca um aminoácido por outro; sem sentido: gera códon de parada precoce, podendo truncar a proteína.",
-              "Silenciosa: sempre destrói a proteína; sentido trocado: não altera nada; sem sentido: aumenta o tamanho da proteína.",
-              "Silenciosa: troca DNA por RNA; sentido trocado: causa duplicação cromossômica; sem sentido: gera splicing alternativo.",
-              "Todas produzem exatamente o mesmo efeito funcional.",
+              "Silenciosa não altera aminoácido; sentido trocado altera um aminoácido; sem sentido cria parada precoce.",
+              "Silenciosa sempre destrói a proteína; sentido trocado não altera nada; sem sentido aumenta tamanho.",
+              "Silenciosa troca DNA por RNA; sentido trocado causa duplicação cromossômica; sem sentido gera splicing alternativo.",
+              "Todas produzem exatamente o mesmo efeito.",
               "Apenas mutações silenciosas podem afetar proteínas."
             ],
-            correctIndex: 0
+            correctIndex: 0,
+            hint: "Silenciosa = mesmo aminoácido; sem sentido = stop.",
+            explanation: "Silenciosa não muda aminoácido; missense troca um; nonsense gera parada precoce. Memorização: silent, miss, nonsense."
           }
         ]
       }
@@ -678,7 +592,7 @@
       const question = flatQuestions[globalIndex];
       const questionState = state[globalIndex];
 
-      if (questionState.solved) {
+      if (!question || !questionState || questionState.solved) {
         return;
       }
 
@@ -726,7 +640,7 @@
 
           const number = document.createElement("span");
           number.className = "badge";
-          number.textContent = `Questão ${globalIndex + 1}`;
+          number.textContent = `Questão ${questionIndex + 1}`;
           meta.appendChild(number);
 
           const type = document.createElement("span");
@@ -741,6 +655,22 @@
 
           const titleEl = document.createElement("h3");
           titleEl.textContent = question.prompt;
+
+          card.append(meta, titleEl);
+
+          if (question.image) {
+            const image = document.createElement("img");
+            image.src = question.image.src;
+            image.alt = question.image.alt;
+            card.appendChild(image);
+
+            if (question.image.caption) {
+              const caption = document.createElement("p");
+              caption.className = "caption";
+              caption.textContent = question.image.caption;
+              card.appendChild(caption);
+            }
+          }
 
           const optionsEl = document.createElement("div");
           optionsEl.className = "options";
@@ -780,7 +710,23 @@
             feedback.textContent = "Selecione uma alternativa.";
           }
 
-          card.append(meta, titleEl, optionsEl, feedback);
+          const hint = document.createElement("details");
+          const hintSummary = document.createElement("summary");
+          hintSummary.textContent = "Dica";
+          const hintText = document.createElement("p");
+          hintText.className = "tip";
+          hintText.textContent = question.hint;
+          hint.append(hintSummary, hintText);
+
+          const explanation = document.createElement("details");
+          const explanationSummary = document.createElement("summary");
+          explanationSummary.textContent = "Explicação e memorização";
+          const explanationText = document.createElement("p");
+          explanationText.className = "tip";
+          explanationText.textContent = question.explanation;
+          explanation.append(explanationSummary, explanationText);
+
+          card.append(optionsEl, feedback, hint, explanation);
           grid.appendChild(card);
           globalIndex += 1;
         });

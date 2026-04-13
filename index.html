@@ -1,323 +1,797 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz Biociências Completo</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz de Bioquímica - DNA e RNA</title>
+  <style>
+    :root {
+      --bg: #f5f0e8;
+      --paper: #fffdf8;
+      --ink: #1e1b18;
+      --muted: #6e6258;
+      --accent: #0d5c63;
+      --accent-soft: #d7ecee;
+      --border: #d8cfc4;
+      --wrong: #c93c37;
+      --wrong-soft: #fde4e2;
+      --right: #2e8b57;
+      --right-soft: #e2f5e9;
+      --shadow: 0 18px 45px rgba(42, 34, 28, 0.12);
+    }
 
-<style>
-body { font-family: Arial; margin:0; background:#f4f4f4; }
-header { background:#1f2d3d; color:#fff; text-align:center; padding:15px; }
-.container { padding:10px; }
+    * {
+      box-sizing: border-box;
+    }
 
-.question {
-    background:#fff;
-    margin-bottom:12px;
-    padding:15px;
-    border-radius:10px;
-}
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(13, 92, 99, 0.12), transparent 28%),
+        radial-gradient(circle at top right, rgba(201, 60, 55, 0.08), transparent 20%),
+        linear-gradient(180deg, #f7f2ea 0%, #efe6da 100%);
+      min-height: 100vh;
+    }
 
-button {
-    width:100%;
-    padding:12px;
-    margin-top:6px;
-    border:none;
-    border-radius:6px;
-    font-size:15px;
-    background:#ecf0f1;
-}
+    .page {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 96px;
+    }
 
-.correct { background:#2ecc71; color:#fff; }
-.wrong { background:#e74c3c; color:#fff; }
+    .hero {
+      background: linear-gradient(135deg, rgba(13, 92, 99, 0.96), rgba(8, 41, 50, 0.96));
+      color: #fff;
+      border-radius: 28px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
 
-#score {
-    position:fixed;
-    bottom:0;
-    width:100%;
-    background:#1f2d3d;
-    color:#fff;
-    text-align:center;
-    padding:12px;
-}
-</style>
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 760px;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+      background: rgba(255, 253, 248, 0.92);
+      border: 1px solid rgba(216, 207, 196, 0.9);
+      border-radius: 22px;
+      padding: 18px 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 24px rgba(42, 34, 28, 0.08);
+      position: sticky;
+      top: 12px;
+      backdrop-filter: blur(8px);
+      z-index: 20;
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .pill {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .reset-btn {
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 18px;
+      background: var(--ink);
+      color: #fff;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .reset-btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.92;
+    }
+
+    .section-title {
+      margin: 28px 0 14px;
+      font-size: 1.25rem;
+      color: var(--accent);
+    }
+
+    .quiz-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .question-card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 10px 24px rgba(42, 34, 28, 0.07);
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      background: #efe6da;
+      color: #5b4f43;
+    }
+
+    .badge.dissertativa {
+      background: #efe5fb;
+      color: #5e3a8c;
+    }
+
+    .question-card h3 {
+      margin: 0 0 16px;
+      font-size: 1.05rem;
+      line-height: 1.55;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .option-btn {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 16px;
+      padding: 14px 16px;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+      font-size: 0.98rem;
+      line-height: 1.45;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      border-color: var(--accent);
+    }
+
+    .option-btn:disabled {
+      cursor: default;
+    }
+
+    .option-btn.correct {
+      background: var(--right-soft);
+      border-color: var(--right);
+      color: #175133;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background: var(--wrong-soft);
+      border-color: var(--wrong);
+      color: #7f1e1b;
+      font-weight: 700;
+    }
+
+    .feedback {
+      min-height: 24px;
+      margin-top: 12px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .feedback.correct {
+      color: var(--right);
+    }
+
+    .feedback.wrong {
+      color: var(--wrong);
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(100% - 20px, 1100px);
+        padding-top: 18px;
+      }
+
+      .hero,
+      .question-card {
+        padding: 18px;
+      }
+
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .reset-btn {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <main class="page">
+    <section class="hero">
+      <h1>Quiz de Bioquímica</h1>
+      <p>
+        Página em HTML baseada nas questões dos anexos sobre DNA, RNA, ciclo celular e expressão gênica.
+        As questões dissertativas foram convertidas em múltipla escolha. Clique nas alternativas:
+        erro fica em vermelho, acerto fica em verde.
+      </p>
+    </section>
 
-<header>🧬 Quiz Completo de Biociências</header>
+    <section class="toolbar">
+      <div class="stats">
+        <span class="pill" id="score">Acertos: 0</span>
+        <span class="pill" id="progress">Respondidas: 0</span>
+        <span class="pill" id="total">Total: 0</span>
+      </div>
+      <button class="reset-btn" id="resetBtn" type="button">Reiniciar quiz</button>
+    </section>
 
-<div class="container" id="quiz"></div>
+    <div id="quizRoot"></div>
+  </main>
 
-<div id="score">Pontuação: 0</div>
+  <script>
+    const sections = [
+      {
+        title: "Avaliação N1 - PMG 20251",
+        questions: [
+          {
+            type: "objetiva",
+            prompt: "1) Sobre a estrutura do DNA, assinale a alternativa correta.",
+            options: [
+              "As duas fitas de DNA formam uma dupla-hélice, por meio de ligações de hidrogênio entre as bases nitrogenadas.",
+              "Os nucleotídeos do DNA possuem adenina, timina, guanina e uracila.",
+              "O DNA é fita simples constituída por ribose, fosfato e aminoácido.",
+              "As duas fitas do DNA possuem a mesma orientação e se unem por pontes dissulfeto.",
+              "Os nucleotídeos do DNA se unem por ligações peptídicas."
+            ],
+            correctIndex: 0
+          },
+          {
+            type: "objetiva",
+            prompt: "2) Associe as enzimas da replicação do DNA às respectivas funções. Qual é a ordem correta?",
+            options: [
+              "2, 4, 3, 1",
+              "1, 3, 4, 2",
+              "4, 3, 2, 1",
+              "1, 4, 3, 2",
+              "4, 1, 3, 2"
+            ],
+            correctIndex: 3
+          },
+          {
+            type: "objetiva",
+            prompt: "3) Na estrutura do DNA, os números 1, 2 e 3 representam, respectivamente:",
+            options: [
+              "Fosfato, ribose e aminoácido.",
+              "Desoxirribose, fosfato e base nitrogenada.",
+              "Aminoácido, desoxirribose e fosfato.",
+              "Fosfato, base nitrogenada e desoxirribose.",
+              "Fosfato, desoxirribose e base nitrogenada."
+            ],
+            correctIndex: 4
+          },
+          {
+            type: "objetiva",
+            prompt: "4) Sobre ácidos nucleicos e nucleotídeos, qual alternativa está correta?",
+            options: [
+              "Apenas II e III estão corretas.",
+              "Apenas I, II e III estão corretas.",
+              "Apenas I, III e IV estão corretas.",
+              "Apenas I e II estão corretas.",
+              "Apenas II, III e IV estão corretas."
+            ],
+            correctIndex: 1
+          },
+          {
+            type: "objetiva",
+            prompt: "5) Sobre a tradução do mRNA em proteína, assinale a alternativa correta.",
+            options: [
+              "O tRNA entra no sítio E do ribossomo para emparelhar o anticódon com o códon.",
+              "O códon de iniciação está sempre logo após a sequência poli-A.",
+              "A subunidade maior do ribossomo catalisa a formação da ligação peptídica.",
+              "O códon de terminação é reconhecido por um tRNA específico carregado com fator de liberação.",
+              "A tradução ocorre simultaneamente com a transcrição em células eucarióticas."
+            ],
+            correctIndex: 2
+          },
+          {
+            type: "objetiva",
+            prompt: "6) Sobre o processo de transcrição, assinale a alternativa correta.",
+            options: [
+              "Na iniciação, o fator TBP liga-se à região TATA box e auxilia a RNA polimerase a encontrar o promotor.",
+              "O alongamento é feito pela enzima alongase, que adiciona A, T, C e G.",
+              "Logo após a síntese de RNA, a tradução começa dentro do núcleo de células eucarióticas.",
+              "A transcrição ocorre no retículo endoplasmático rugoso.",
+              "A síntese de RNA ocorre sempre no sentido 3' para 5'."
+            ],
+            correctIndex: 0
+          },
+          {
+            type: "objetiva",
+            prompt: "7) Associe as modificações pós-transcricionais com as definições. Qual é a sequência correta?",
+            options: [
+              "1, 3, 2",
+              "1, 2, 3",
+              "2, 1, 3",
+              "3, 1, 2",
+              "2, 3, 1"
+            ],
+            correctIndex: 4
+          },
+          {
+            type: "objetiva",
+            prompt: "8) De acordo com a síntese proteica, podemos afirmar que:",
+            options: [
+              "Para a síntese de proteínas são necessários RNAm, RNAt e RNAr.",
+              "O processo representado é a transcrição e ocorre no citoplasma.",
+              "O RNAt possui o códon que será decodificado pelo RNAm com o anticódon.",
+              "O RNAm carrega o aminoácido correspondente durante a síntese proteica.",
+              "Todo RNAt possui o mesmo códon de iniciação, sempre UAA."
+            ],
+            correctIndex: 0
+          },
+          {
+            type: "objetiva",
+            prompt: "9) A ricina pode ocasionar a morte ao inibir diretamente a síntese de:",
+            options: [
+              "Lipídeos.",
+              "DNA.",
+              "Proteínas.",
+              "RNA.",
+              "Carboidratos."
+            ],
+            correctIndex: 2
+          },
+          {
+            type: "objetiva",
+            prompt: "10) Sobre alterações cromossômicas, qual alternativa está correta?",
+            options: [
+              "Apenas I e II estão corretas.",
+              "Apenas I, III e IV estão corretas.",
+              "Apenas I e III estão corretas.",
+              "Apenas II, III e IV estão corretas.",
+              "Apenas II e IV estão corretas."
+            ],
+            correctIndex: 2
+          },
+          {
+            type: "dissertativa",
+            prompt: "11) Convertida da dissertativa: em uma única origem de replicação eucariótica, em que direção a replicação prossegue em relação ao ponto de origem?",
+            options: [
+              "Apenas para a direita, porque existe uma única forquilha de replicação.",
+              "Apenas para a esquerda, pois a DNA polimerase só avança nesse sentido no cromossomo.",
+              "Para ambos os lados, de forma bidirecional a partir da origem.",
+              "Nenhuma direção definida, porque a replicação é aleatória.",
+              "Primeiro para a direita e só depois para a esquerda."
+            ],
+            correctIndex: 2
+          },
+          {
+            type: "dissertativa",
+            prompt: "12) Convertida da dissertativa: uma mutação gerou o códon UGA no meio do RNA, e um tRNA mutante passou a inserir triptofano nesse ponto. Qual alteração provavelmente ocorreu no anticódon do tRNA?",
+            options: [
+              "O anticódon passou de ACC para ACU, permitindo reconhecimento de UGA e inserção de triptofano.",
+              "O anticódon passou de UGG para UGA, tornando o tRNA um fator de liberação.",
+              "O anticódon passou de CCA para UCA, impedindo qualquer tradução.",
+              "O anticódon passou de AUG para UGG, produzindo metionina no lugar de triptofano.",
+              "O anticódon permaneceu igual, e a mudança ocorreu na ribose."
+            ],
+            correctIndex: 0
+          }
+        ]
+      },
+      {
+        title: "Lista de Bioquímica DNA e RNA",
+        questions: [
+          {
+            type: "objetiva",
+            prompt: "13) Durante o ciclo celular, qual fase é caracterizada principalmente pelo crescimento celular e síntese de proteínas e organelas, preparando-se para a replicação do DNA?",
+            options: [
+              "Fase S",
+              "Fase G2",
+              "Fase G1",
+              "Fase M",
+              "Citocinese"
+            ],
+            correctIndex: 2
+          },
+          {
+            type: "objetiva",
+            prompt: "14) Qual é a sequência correta do Dogma Central da Biologia Molecular?",
+            options: [
+              "RNA → DNA → Proteína",
+              "DNA → RNA → Proteína",
+              "Proteína → RNA → DNA",
+              "DNA → Proteína → RNA",
+              "RNA → Proteína → DNA"
+            ],
+            correctIndex: 1
+          },
+          {
+            type: "objetiva",
+            prompt: "15) Qual enzima é responsável por desenrolar a dupla hélice do DNA durante a replicação?",
+            options: [
+              "DNA polimerase",
+              "DNA ligase",
+              "Primase",
+              "Topoisomerase",
+              "DNA helicase"
+            ],
+            correctIndex: 4
+          },
+          {
+            type: "objetiva",
+            prompt: "16) Em eucariotos, qual modificação pós-transcricional é adicionada à extremidade 5' do transcrito e é crucial para proteção e eficiência da tradução?",
+            options: [
+              "Splicing de íntrons",
+              "Adição do cap 5'",
+              "Poliadenilação",
+              "Edição de RNA",
+              "Metilação de bases internas"
+            ],
+            correctIndex: 1
+          },
+          {
+            type: "dissertativa",
+            prompt: "17) Convertida da dissertativa: qual opção explica melhor a importância da replicação semiconservativa do DNA?",
+            options: [
+              "Cada molécula-filha mantém uma fita parental e uma fita nova, o que preserva a informação genética e permite correção de erros durante a cópia.",
+              "As duas fitas da molécula original permanecem juntas, e apenas moléculas extras são produzidas para reserva.",
+              "A replicação semiconservativa impede totalmente qualquer mutação, tornando o DNA imutável.",
+              "Somente genes ativos são replicados, reduzindo o gasto energético da célula.",
+              "A principal função é trocar timina por uracila para facilitar a divisão celular."
+            ],
+            correctIndex: 0
+          },
+          {
+            type: "dissertativa",
+            prompt: "18) Convertida da dissertativa: qual é a importância do ponto de checagem G2/M e o que pode ocorrer se ele falhar cronicamente?",
+            options: [
+              "Ele impede a entrada em mitose quando o DNA não terminou de ser replicado ou está danificado; se falhar, pode haver instabilidade genômica e proliferação descontrolada.",
+              "Ele ativa a citocinese antes da replicação; se falhar, a célula perde ribossomos.",
+              "Ele inicia a tradução dos genes mitóticos; se falhar, a célula deixa de produzir ATP.",
+              "Ele remove telômeros encurtados; se falhar, o DNA se converte em RNA.",
+              "Ele controla a síntese de parede celular; se falhar, a mitose acontece sem cromossomos."
+            ],
+            correctIndex: 0
+          },
+          {
+            type: "objetiva",
+            prompt: "19) Qual das fases do ciclo celular é caracterizada pela intensa síntese de proteínas e organelas, preparando a célula para a replicação do DNA?",
+            options: [
+              "Fase S",
+              "Fase G2",
+              "Prófase",
+              "Telófase",
+              "Fase G1"
+            ],
+            correctIndex: 4
+          },
+          {
+            type: "objetiva",
+            prompt: "20) Durante qual fase da intérfase ocorre a replicação do DNA?",
+            options: [
+              "Fase G1",
+              "Fase G2",
+              "Fase M",
+              "Citocinese",
+              "Fase S"
+            ],
+            correctIndex: 4
+          },
+          {
+            type: "objetiva",
+            prompt: "21) Qual mecanismo é fundamental para corrigir erros que podem ocorrer durante a replicação do DNA?",
+            options: [
+              "Síntese de RNA pelos ribossomos",
+              "Processamento de proteínas no retículo endoplasmático",
+              "Quebra de ligações peptídicas por enzimas lisossômicas",
+              "Ação das topoisomerases para superenrolar o DNA",
+              "Revisão pela polimerase e sistemas específicos de reparo do DNA"
+            ],
+            correctIndex: 4
+          },
+          {
+            type: "dissertativa",
+            prompt: "22) Convertida da dissertativa: qual alternativa descreve corretamente a intérfase e seus principais eventos?",
+            options: [
+              "G1: crescimento e síntese; S: duplicação do DNA; G2: preparação final para mitose com checagem e síntese adicional.",
+              "G1: mitose; S: citocinese; G2: apoptose.",
+              "G1: tradução; S: transcrição; G2: digestão lisossomal.",
+              "G1: duplicação de centrômeros; S: quebra cromossômica; G2: recombinação obrigatória.",
+              "G1, S e G2 são fases equivalentes sem funções distintas."
+            ],
+            correctIndex: 0
+          },
+          {
+            type: "dissertativa",
+            prompt: "23) Convertida da dissertativa: qual descrição resume corretamente a replicação semiconservativa do DNA e o papel da DNA polimerase?",
+            options: [
+              "Cada fita parental serve de molde para uma nova fita, e a DNA polimerase adiciona nucleotídeos no sentido 5'→3', ajudando a garantir fidelidade.",
+              "A DNA polimerase quebra as duas fitas parentais e as substitui por RNA temporário.",
+              "A replicação ocorre sem fita molde, e a DNA polimerase apenas cola fragmentos ao acaso.",
+              "A DNA polimerase sintetiza proteínas que depois viram DNA nas células-filhas.",
+              "O processo gera uma célula com DNA e outra com RNA."
+            ],
+            correctIndex: 0
+          },
+          {
+            type: "objetiva",
+            prompt: "24) Na replicação do DNA em Escherichia coli, qual é a principal função da DNA Polimerase III?",
+            options: [
+              "Remover os primers de RNA e preencher as lacunas com DNA.",
+              "Ligar os fragmentos de Okazaki na fita descontínua.",
+              "Iniciar a síntese de DNA criando um primer de RNA.",
+              "Sintetizar as novas fitas de DNA de forma contínua e descontínua, adicionando nucleotídeos na direção 5'→3'.",
+              "Reparar danos no DNA causados por agentes mutagênicos."
+            ],
+            correctIndex: 3
+          },
+          {
+            type: "objetiva",
+            prompt: "25) Qual é a principal função da adição da cauda poli-A ao mRNA eucariótico?",
+            options: [
+              "Facilitar o emparelhamento com o tRNA correto durante a tradução.",
+              "Remover íntrons e ligar éxons para formar o mRNA maduro.",
+              "Proteger o mRNA da degradação e auxiliar na exportação nuclear e no início da tradução.",
+              "Sinalizar o término da transcrição e liberar a RNA polimerase.",
+              "Atuar como sítio de ligação para iniciar a transcrição."
+            ],
+            correctIndex: 2
+          },
+          {
+            type: "objetiva",
+            prompt: "26) Na tradução, qual é o papel essencial do sítio P do ribossomo?",
+            options: [
+              "Receber o tRNA com o próximo aminoácido.",
+              "Permitir a saída do tRNA descarregado.",
+              "Catalisar a ligação fosfodiéster entre nucleotídeos do mRNA.",
+              "Manter o tRNA com a cadeia polipeptídica em crescimento, facilitando a ligação peptídica.",
+              "Reconhecer o códon de iniciação e recrutar a subunidade menor."
+            ],
+            correctIndex: 3
+          },
+          {
+            type: "objetiva",
+            prompt: "27) Qual afirmação descreve corretamente uma diferença estrutural crucial entre DNA e RNA?",
+            options: [
+              "O DNA é sempre de fita simples e o RNA sempre de fita dupla.",
+              "A uracila está no DNA e a timina no RNA.",
+              "O DNA contém desoxirribose e timina, sendo mais estável; o RNA possui ribose e uracila, sendo mais versátil em funções catalíticas e regulatórias.",
+              "O DNA fica exclusivamente no núcleo, enquanto o RNA fica apenas no citoplasma.",
+              "O DNA é traduzido diretamente em proteínas."
+            ],
+            correctIndex: 2
+          },
+          {
+            type: "dissertativa",
+            prompt: "28) Convertida da dissertativa: como a presença ou ausência de lactose e glicose afeta a expressão do operon lac?",
+            options: [
+              "Sem lactose, o repressor lac bloqueia o operon; com lactose, ele é inativado. A baixa glicose aumenta AMPc, favorecendo a ligação de CAP e ativação máxima da transcrição.",
+              "Com lactose, o repressor lac se liga mais fortemente ao operador e a glicose ativa CAP.",
+              "A lactose ativa diretamente a RNA polimerase sem participação do repressor, e a glicose não interfere.",
+              "Sem glicose, o operon lac é sempre desligado e não depende de lactose.",
+              "CAP atua como enzima de replicação e não participa da regulação gênica."
+            ],
+            correctIndex: 0
+          },
+          {
+            type: "dissertativa",
+            prompt: "29) Convertida da dissertativa: o que é splicing alternativo e qual sua importância biológica?",
+            options: [
+              "É a seleção variável de éxons de um mesmo pré-mRNA, permitindo gerar diferentes proteínas a partir de um único gene e aumentando a diversidade proteica.",
+              "É a duplicação completa dos cromossomos antes da tradução, produzindo proteínas idênticas.",
+              "É a troca de timina por uracila diretamente no DNA para regular genes.",
+              "É um tipo de mutação que sempre causa perda total de função.",
+              "É o processo de união de ribossomos para formar o nucléolo."
+            ],
+            correctIndex: 0
+          },
+          {
+            type: "dissertativa",
+            prompt: "30) Convertida da dissertativa: qual alternativa resume corretamente a função dos telômeros e da telomerase?",
+            options: [
+              "Telômeros protegem as extremidades cromossômicas; a telomerase repõe sequências teloméricas, influenciando envelhecimento celular e também a imortalização de células tumorais.",
+              "Telômeros iniciam a tradução e a telomerase produz ribossomos no núcleo.",
+              "Telômeros são genes que controlam a glicose, e a telomerase remove mutações pontuais.",
+              "Telômeros existem apenas em procariotos e a telomerase inibe toda divisão celular.",
+              "Telômeros são regiões centrais dos cromossomos responsáveis pela segregação meiótica."
+            ],
+            correctIndex: 0
+          },
+          {
+            type: "dissertativa",
+            prompt: "31) Convertida da dissertativa: qual alternativa compara corretamente replicação do DNA em procariotos e eucariotos?",
+            options: [
+              "Procariotos costumam ter uma origem de replicação em DNA circular e menos complexidade enzimática; eucariotos têm múltiplas origens em cromossomos lineares e maior complexidade de regulação.",
+              "Eucariotos replicam DNA apenas no citoplasma, enquanto procariotos replicam apenas no núcleo.",
+              "Procariotos usam ribossomos para replicação, e eucariotos usam lisossomos.",
+              "Nos eucariotos não há síntese descontínua, apenas contínua.",
+              "Procariotos e eucariotos têm processos idênticos, sem diferenças relevantes."
+            ],
+            correctIndex: 0
+          },
+          {
+            type: "dissertativa",
+            prompt: "32) Convertida da dissertativa: como mutações pontuais silenciosas, de sentido trocado e sem sentido podem afetar uma proteína?",
+            options: [
+              "Silenciosa: não altera o aminoácido; sentido trocado: troca um aminoácido por outro; sem sentido: gera códon de parada precoce, podendo truncar a proteína.",
+              "Silenciosa: sempre destrói a proteína; sentido trocado: não altera nada; sem sentido: aumenta o tamanho da proteína.",
+              "Silenciosa: troca DNA por RNA; sentido trocado: causa duplicação cromossômica; sem sentido: gera splicing alternativo.",
+              "Todas produzem exatamente o mesmo efeito funcional.",
+              "Apenas mutações silenciosas podem afetar proteínas."
+            ],
+            correctIndex: 0
+          }
+        ]
+      }
+    ];
 
-<script>
+    const flatQuestions = sections.flatMap(section => section.questions);
+    const state = flatQuestions.map(() => ({ solved: false, guessedWrong: new Set() }));
 
-const questions = [
+    const quizRoot = document.getElementById("quizRoot");
+    const scoreEl = document.getElementById("score");
+    const progressEl = document.getElementById("progress");
+    const totalEl = document.getElementById("total");
+    const resetBtn = document.getElementById("resetBtn");
 
-/* ===== PDF 1 ===== */
+    function updateStats() {
+      const solvedCount = state.filter(item => item.solved).length;
+      scoreEl.textContent = `Acertos: ${solvedCount}`;
+      progressEl.textContent = `Respondidas: ${solvedCount}`;
+      totalEl.textContent = `Total: ${flatQuestions.length}`;
+    }
 
-{
-q:`1) A molécula de ácido desoxirribonucleico (DNA) foi descoberta em 1869, pelo bioquímico suíço Johann Friedrich Miescher... Sobre a estrutura do DNA, assinale a alternativa correta.`,
-a:[
-"As duas fitas de DNA formam uma dupla-hélice, por meio de ligações de hidrogênio entre as bases nitrogenadas.",
-"Os nucleotídeos possuem adenina, timina, guanina e uracila.",
-"O DNA é fita simples com ribose e aminoácido.",
-"As duas fitas possuem mesma orientação e pontes dissulfeto.",
-"Ligações peptídicas entre bases nitrogenadas."
-],
-correct:0
-},
+    function answerQuestion(globalIndex, optionIndex) {
+      const question = flatQuestions[globalIndex];
+      const questionState = state[globalIndex];
 
-{
-q:`2) Associe as enzimas com suas funções na replicação do DNA.`,
-a:[
-"2, 4, 3, 1",
-"1, 3, 4, 2",
-"4, 3, 2, 1",
-"1, 4, 3, 2",
-"4, 1, 3, 2"
-],
-correct:3
-},
+      if (questionState.solved) {
+        return;
+      }
 
-{
-q:`3) Sobre a estrutura do DNA, os números 1, 2 e 3 representam:`,
-a:[
-"Fosfato, ribose e aminoácido",
-"Desoxirribose, fosfato e base nitrogenada",
-"Aminoácido, desoxirribose e fosfato",
-"Fosfato, base nitrogenada e desoxirribose",
-"Fosfato, desoxirribose e base nitrogenada"
-],
-correct:4
-},
+      if (optionIndex === question.correctIndex) {
+        questionState.solved = true;
+      } else {
+        questionState.guessedWrong.add(optionIndex);
+      }
 
-{
-q:`4) Sobre ácidos nucleicos, assinale a alternativa correta.`,
-a:[
-"Apenas II e III estão corretas.",
-"Apenas I, II e III estão corretas.",
-"Apenas I, III e IV estão corretas.",
-"Apenas I e II estão corretas.",
-"Apenas II, III e IV estão corretas."
-],
-correct:1
-},
+      renderQuiz();
+      updateStats();
+    }
 
-{
-q:`5) Sobre a tradução do mRNA, assinale a correta:`,
-a:[
-"O tRNA entra no sítio E.",
-"O códon inicia após poli-A.",
-"A subunidade maior catalisa ligação peptídica.",
-"O códon stop é reconhecido por tRNA.",
-"Ocorre simultaneamente em eucariotos."
-],
-correct:2
-},
+    function resetQuiz() {
+      for (const item of state) {
+        item.solved = false;
+        item.guessedWrong = new Set();
+      }
+      renderQuiz();
+      updateStats();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
 
-{
-q:`6) Sobre transcrição, assinale a correta:`,
-a:[
-"TBP liga-se à TATA BOX.",
-"Alongase adiciona nucleotídeos.",
-"Ocorre síntese proteica no núcleo.",
-"Ocorre no retículo rugoso.",
-"RNA é sintetizado 3’→5’."
-],
-correct:0
-},
+    function renderQuiz() {
+      quizRoot.innerHTML = "";
+      let globalIndex = 0;
 
-{
-q:`7) Associe modificações pós-transcricionais:`,
-a:[
-"1–3–2",
-"1–2–3",
-"2–1–3",
-"3–1–2",
-"2–3–1"
-],
-correct:4
-},
+      sections.forEach(section => {
+        const title = document.createElement("h2");
+        title.className = "section-title";
+        title.textContent = section.title;
+        quizRoot.appendChild(title);
 
-{
-q:`8) Sobre síntese proteica:`,
-a:[
-"São necessários RNAm, RNAt e RNAr.",
-"É transcrição no citoplasma.",
-"RNAt possui códon.",
-"RNAm carrega aminoácido.",
-"RNAt possui UAA."
-],
-correct:0
-},
+        const grid = document.createElement("div");
+        grid.className = "quiz-grid";
 
-{
-q:`9) A ricina inibe a síntese de:`,
-a:["Lipídeos","DNA","Proteínas","RNA","Carboidratos"],
-correct:2
-},
+        section.questions.forEach((question, localIndex) => {
+          const questionState = state[globalIndex];
+          const card = document.createElement("article");
+          card.className = "question-card";
 
-{
-q:`10) Sobre alterações cromossômicas:`,
-a:[
-"Apenas I e II",
-"Apenas I, III e IV",
-"Apenas I e III",
-"Apenas II, III e IV",
-"Apenas II e IV"
-],
-correct:2
-},
+          const meta = document.createElement("div");
+          meta.className = "meta";
 
-/* ===== PDF 2 ===== */
+          const number = document.createElement("span");
+          number.className = "badge";
+          number.textContent = `Questão ${globalIndex + 1}`;
+          meta.appendChild(number);
 
-{
-q:`11) Qual fase é caracterizada pelo crescimento celular e síntese de proteínas?`,
-a:["Fase S","Fase G2","Fase G1","Fase M","Citocinese"],
-correct:2
-},
+          const type = document.createElement("span");
+          type.className = `badge ${question.type}`;
+          type.textContent = question.type === "dissertativa" ? "Convertida da dissertativa" : "Múltipla escolha";
+          meta.appendChild(type);
 
-{
-q:`12) Qual a sequência correta do dogma central?`,
-a:[
-"RNA → DNA → Proteína",
-"DNA → RNA → Proteína",
-"Proteína → RNA → DNA",
-"DNA → Proteína → RNA",
-"RNA → Proteína → DNA"
-],
-correct:1
-},
+          const source = document.createElement("span");
+          source.className = "badge";
+          source.textContent = `Bloco ${localIndex + 1}`;
+          meta.appendChild(source);
 
-{
-q:`13) Qual enzima desenrola o DNA?`,
-a:[
-"DNA polimerase",
-"DNA ligase",
-"Primase",
-"Topoisomerase",
-"DNA helicase"
-],
-correct:4
-},
+          const titleEl = document.createElement("h3");
+          titleEl.textContent = question.prompt;
 
-{
-q:`14) Modificação adicionada à extremidade 5':`,
-a:[
-"Splicing",
-"Cap 5'",
-"Poli-A",
-"Edição",
-"Metilação"
-],
-correct:1
-},
+          const optionsEl = document.createElement("div");
+          optionsEl.className = "options";
 
-{
-q:`15) Fase de preparação para replicação:`,
-a:["Fase S","Fase G2","Prófase","Telófase","Fase G1"],
-correct:4
-},
+          question.options.forEach((option, optionIndex) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "option-btn";
+            button.textContent = option;
 
-{
-q:`16) Replicação ocorre na fase:`,
-a:["G1","G2","M","Citocinese","S"],
-correct:4
-},
+            if (questionState.solved && optionIndex === question.correctIndex) {
+              button.classList.add("correct");
+              button.disabled = true;
+            } else if (questionState.guessedWrong.has(optionIndex)) {
+              button.classList.add("wrong");
+            }
 
-{
-q:`17) Mecanismo de correção do DNA:`,
-a:[
-"Síntese de RNA",
-"Processamento de proteínas",
-"Quebra peptídica",
-"Topoisomerase",
-"Reparo do DNA"
-],
-correct:4
-},
+            if (questionState.solved) {
+              button.disabled = true;
+            } else {
+              button.addEventListener("click", () => answerQuestion(globalIndex, optionIndex));
+            }
 
-{
-q:`18) Função da DNA Polimerase III:`,
-a:[
-"Remover primers",
-"Ligar fragmentos",
-"Iniciar síntese",
-"Sintetizar DNA 5'→3'",
-"Reparar DNA"
-],
-correct:3
-},
+            optionsEl.appendChild(button);
+          });
 
-{
-q:`19) Função da cauda poli-A:`,
-a:[
-"Emparelhamento com tRNA",
-"Remover íntrons",
-"Proteger mRNA",
-"Finalizar transcrição",
-"Iniciar transcrição"
-],
-correct:2
-},
+          const feedback = document.createElement("div");
+          feedback.className = "feedback";
 
-{
-q:`20) Função do sítio P:`,
-a:[
-"Receber tRNA",
-"Saída do tRNA",
-"Ligação fosfodiéster",
-"Manter cadeia polipeptídica",
-"Reconhecer início"
-],
-correct:3
-}
+          if (questionState.solved) {
+            feedback.classList.add("correct");
+            feedback.textContent = "Resposta correta marcada em verde.";
+          } else if (questionState.guessedWrong.size > 0) {
+            feedback.classList.add("wrong");
+            feedback.textContent = "Alternativa incorreta marcada em vermelho. Você ainda pode tentar novamente.";
+          } else {
+            feedback.textContent = "Selecione uma alternativa.";
+          }
 
-];
-
-let score = 0;
-
-function loadQuiz(){
-    const quiz = document.getElementById("quiz");
-
-    questions.forEach((q)=>{
-        let div = document.createElement("div");
-        div.className="question";
-
-        let title=document.createElement("p");
-        title.innerText=q.q;
-
-        div.appendChild(title);
-
-        q.a.forEach((alt,i)=>{
-            let btn=document.createElement("button");
-            btn.innerText=alt;
-
-            btn.onclick=()=>{
-                if(btn.classList.contains("correct")||btn.classList.contains("wrong")) return;
-
-                if(i===q.correct){
-                    btn.classList.add("correct");
-                    score++;
-                }else{
-                    btn.classList.add("wrong");
-                }
-
-                document.getElementById("score").innerText=
-                "Pontuação: "+score+" / "+questions.length;
-            };
-
-            div.appendChild(btn);
+          card.append(meta, titleEl, optionsEl, feedback);
+          grid.appendChild(card);
+          globalIndex += 1;
         });
 
-        quiz.appendChild(div);
-    });
-}
+        quizRoot.appendChild(grid);
+      });
+    }
 
-loadQuiz();
+    resetBtn.addEventListener("click", resetQuiz);
 
-</script>
-
+    renderQuiz();
+    updateStats();
+  </script>
 </body>
 </html>

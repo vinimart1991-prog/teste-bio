@@ -716,7 +716,8 @@
         grid.className = "quiz-grid";
 
         section.questions.forEach((question, localIndex) => {
-          const questionState = state[globalIndex];
+          const questionIndex = globalIndex;
+          const questionState = state[questionIndex];
           const card = document.createElement("article");
           card.className = "question-card";
 
@@ -760,7 +761,7 @@
             if (questionState.solved) {
               button.disabled = true;
             } else {
-              button.addEventListener("click", () => answerQuestion(globalIndex, optionIndex));
+              button.addEventListener("click", () => answerQuestion(questionIndex, optionIndex));
             }
 
             optionsEl.appendChild(button);

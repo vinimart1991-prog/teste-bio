@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Biociências Completo</title>
+
+<style>
+body { font-family: Arial; margin:0; background:#f4f4f4; }
+header { background:#1f2d3d; color:#fff; text-align:center; padding:15px; }
+.container { padding:10px; }
+
+.question {
+    background:#fff;
+    margin-bottom:12px;
+    padding:15px;
+    border-radius:10px;
+}
+
+button {
+    width:100%;
+    padding:12px;
+    margin-top:6px;
+    border:none;
+    border-radius:6px;
+    font-size:15px;
+    background:#ecf0f1;
+}
+
+.correct { background:#2ecc71; color:#fff; }
+.wrong { background:#e74c3c; color:#fff; }
+
+#score {
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:#1f2d3d;
+    color:#fff;
+    text-align:center;
+    padding:12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>🧬 Quiz Completo de Biociências</header>
+
+<div class="container" id="quiz"></div>
+
+<div id="score">Pontuação: 0</div>
+
+<script>
+
+const questions = [
+
+/* ===== PDF 1 ===== */
+
+{
+q:`1) A molécula de ácido desoxirribonucleico (DNA) foi descoberta em 1869, pelo bioquímico suíço Johann Friedrich Miescher... Sobre a estrutura do DNA, assinale a alternativa correta.`,
+a:[
+"As duas fitas de DNA formam uma dupla-hélice, por meio de ligações de hidrogênio entre as bases nitrogenadas.",
+"Os nucleotídeos possuem adenina, timina, guanina e uracila.",
+"O DNA é fita simples com ribose e aminoácido.",
+"As duas fitas possuem mesma orientação e pontes dissulfeto.",
+"Ligações peptídicas entre bases nitrogenadas."
+],
+correct:0
+},
+
+{
+q:`2) Associe as enzimas com suas funções na replicação do DNA.`,
+a:[
+"2, 4, 3, 1",
+"1, 3, 4, 2",
+"4, 3, 2, 1",
+"1, 4, 3, 2",
+"4, 1, 3, 2"
+],
+correct:3
+},
+
+{
+q:`3) Sobre a estrutura do DNA, os números 1, 2 e 3 representam:`,
+a:[
+"Fosfato, ribose e aminoácido",
+"Desoxirribose, fosfato e base nitrogenada",
+"Aminoácido, desoxirribose e fosfato",
+"Fosfato, base nitrogenada e desoxirribose",
+"Fosfato, desoxirribose e base nitrogenada"
+],
+correct:4
+},
+
+{
+q:`4) Sobre ácidos nucleicos, assinale a alternativa correta.`,
+a:[
+"Apenas II e III estão corretas.",
+"Apenas I, II e III estão corretas.",
+"Apenas I, III e IV estão corretas.",
+"Apenas I e II estão corretas.",
+"Apenas II, III e IV estão corretas."
+],
+correct:1
+},
+
+{
+q:`5) Sobre a tradução do mRNA, assinale a correta:`,
+a:[
+"O tRNA entra no sítio E.",
+"O códon inicia após poli-A.",
+"A subunidade maior catalisa ligação peptídica.",
+"O códon stop é reconhecido por tRNA.",
+"Ocorre simultaneamente em eucariotos."
+],
+correct:2
+},
+
+{
+q:`6) Sobre transcrição, assinale a correta:`,
+a:[
+"TBP liga-se à TATA BOX.",
+"Alongase adiciona nucleotídeos.",
+"Ocorre síntese proteica no núcleo.",
+"Ocorre no retículo rugoso.",
+"RNA é sintetizado 3’→5’."
+],
+correct:0
+},
+
+{
+q:`7) Associe modificações pós-transcricionais:`,
+a:[
+"1–3–2",
+"1–2–3",
+"2–1–3",
+"3–1–2",
+"2–3–1"
+],
+correct:4
+},
+
+{
+q:`8) Sobre síntese proteica:`,
+a:[
+"São necessários RNAm, RNAt e RNAr.",
+"É transcrição no citoplasma.",
+"RNAt possui códon.",
+"RNAm carrega aminoácido.",
+"RNAt possui UAA."
+],
+correct:0
+},
+
+{
+q:`9) A ricina inibe a síntese de:`,
+a:["Lipídeos","DNA","Proteínas","RNA","Carboidratos"],
+correct:2
+},
+
+{
+q:`10) Sobre alterações cromossômicas:`,
+a:[
+"Apenas I e II",
+"Apenas I, III e IV",
+"Apenas I e III",
+"Apenas II, III e IV",
+"Apenas II e IV"
+],
+correct:2
+},
+
+/* ===== PDF 2 ===== */
+
+{
+q:`11) Qual fase é caracterizada pelo crescimento celular e síntese de proteínas?`,
+a:["Fase S","Fase G2","Fase G1","Fase M","Citocinese"],
+correct:2
+},
+
+{
+q:`12) Qual a sequência correta do dogma central?`,
+a:[
+"RNA → DNA → Proteína",
+"DNA → RNA → Proteína",
+"Proteína → RNA → DNA",
+"DNA → Proteína → RNA",
+"RNA → Proteína → DNA"
+],
+correct:1
+},
+
+{
+q:`13) Qual enzima desenrola o DNA?`,
+a:[
+"DNA polimerase",
+"DNA ligase",
+"Primase",
+"Topoisomerase",
+"DNA helicase"
+],
+correct:4
+},
+
+{
+q:`14) Modificação adicionada à extremidade 5':`,
+a:[
+"Splicing",
+"Cap 5'",
+"Poli-A",
+"Edição",
+"Metilação"
+],
+correct:1
+},
+
+{
+q:`15) Fase de preparação para replicação:`,
+a:["Fase S","Fase G2","Prófase","Telófase","Fase G1"],
+correct:4
+},
+
+{
+q:`16) Replicação ocorre na fase:`,
+a:["G1","G2","M","Citocinese","S"],
+correct:4
+},
+
+{
+q:`17) Mecanismo de correção do DNA:`,
+a:[
+"Síntese de RNA",
+"Processamento de proteínas",
+"Quebra peptídica",
+"Topoisomerase",
+"Reparo do DNA"
+],
+correct:4
+},
+
+{
+q:`18) Função da DNA Polimerase III:`,
+a:[
+"Remover primers",
+"Ligar fragmentos",
+"Iniciar síntese",
+"Sintetizar DNA 5'→3'",
+"Reparar DNA"
+],
+correct:3
+},
+
+{
+q:`19) Função da cauda poli-A:`,
+a:[
+"Emparelhamento com tRNA",
+"Remover íntrons",
+"Proteger mRNA",
+"Finalizar transcrição",
+"Iniciar transcrição"
+],
+correct:2
+},
+
+{
+q:`20) Função do sítio P:`,
+a:[
+"Receber tRNA",
+"Saída do tRNA",
+"Ligação fosfodiéster",
+"Manter cadeia polipeptídica",
+"Reconhecer início"
+],
+correct:3
+}
+
+];
+
+let score = 0;
+
+function loadQuiz(){
+    const quiz = document.getElementById("quiz");
+
+    questions.forEach((q)=>{
+        let div = document.createElement("div");
+        div.className="question";
+
+        let title=document.createElement("p");
+        title.innerText=q.q;
+
+        div.appendChild(title);
+
+        q.a.forEach((alt,i)=>{
+            let btn=document.createElement("button");
+            btn.innerText=alt;
+
+            btn.onclick=()=>{
+                if(btn.classList.contains("correct")||btn.classList.contains("wrong")) return;
+
+                if(i===q.correct){
+                    btn.classList.add("correct");
+                    score++;
+                }else{
+                    btn.classList.add("wrong");
+                }
+
+                document.getElementById("score").innerText=
+                "Pontuação: "+score+" / "+questions.length;
+            };
+
+            div.appendChild(btn);
+        });
+
+        quiz.appendChild(div);
+    });
+}
+
+loadQuiz();
+
+</script>
+
+</body>
+</html>
